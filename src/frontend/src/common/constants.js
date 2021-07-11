@@ -1,7 +1,8 @@
 export const DOUGH_LIST = [
-  { value: "light", label: "Тонкое" },
-  { value: "large", label: "Толстое" },
+  { label: "Тонкое", value: "light" },
+  { label: "Толстое", value: "large" },
 ];
+export const DOUGH_DEFAULT = "light";
 
 export const INGREDIENT_LIST = [
   { label: "Грибы", value: "mushrooms" },
@@ -20,17 +21,22 @@ export const INGREDIENT_LIST = [
   { label: "Пармезан", value: "parmesan" },
   { label: "Блю чиз", value: "blue_cheese" },
 ];
+export const INGREDIENT_DEFAULT_COUNT = 0;
+export const INGREDIENT_MAX_COUNT = 3;
+export const INGREDIENT_MIN_COUNT = 0;
 
 export const SAUCE_LIST = [
   { label: "Томатный", value: "tomato" },
   { label: "Сливочный", value: "creamy" },
 ];
+export const SAUCE_DEFAULT = "tomato";
 
 export const SIZE_LIST = [
   { label: "23 см", value: "small" },
   { label: "32 см", value: "normal" },
   { label: "45 см", value: "big" },
 ];
+export const SIZE_DEFAULT = "normal";
 
 export default {
   DOUGH_LIST,
