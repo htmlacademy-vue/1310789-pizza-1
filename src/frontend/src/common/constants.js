@@ -38,6 +38,9 @@ export const SIZE_LIST = [
 ];
 export const SIZE_DEFAULT = "normal";
 
+export const MOVE = "move";
+export const DATA_TRANSFER_PAYLOAD = "payload";
+
 export default {
   DOUGH_LIST,
   INGREDIENT_LIST,
