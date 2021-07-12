@@ -1,15 +1,27 @@
 <template>
-  <component :is="tag" :class="['title', `title--${size}`]"><slot /></component>
+  <component :is="tag" :class="['title', `title--${size}`]">
+    <!-- @slot Содержимое заголовка-->
+    <slot />
+  </component>
 </template>
 
 <script>
+/**
+ * Заголвки приложения
+ */
 export default {
   name: "AppTitle",
   props: {
+    /**
+     * HTML-тэг компонета
+     */
     tag: {
       type: String,
       default: "h2",
     },
+    /**
+     * Указывает на размер шрифта
+     */
     size: {
       type: String,
       default: "small",
@@ -19,7 +31,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .title {
   box-sizing: border-box;
   width: 100%;

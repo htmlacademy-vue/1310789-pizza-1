@@ -7,9 +7,15 @@
 <script>
 import LogoSvg from "@/assets/img/logo.svg";
 
+/**
+ * Логотип приложения
+ */
 export default {
   name: "AppLogo",
   props: {
+    /**
+     * Ссылка на изображение логотипа
+     */
     src: {
       type: String,
       default: LogoSvg,
@@ -18,7 +24,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .logo {
   display: block;
 

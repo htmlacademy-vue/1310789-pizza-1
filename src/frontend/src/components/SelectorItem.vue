@@ -3,15 +3,28 @@
 </template>
 
 <script>
+import { INGREDIENT_LIST } from "@/common/constants";
+
+/**
+ * Компонент наполнителя для пиццы (изображение + текст)
+ */
 export default {
   name: "SelectorItem",
   props: {
+    /**
+     * Название наполнителя
+     */
     label: {
       type: String,
     },
+    /**
+     * Значение наполнителя
+     */
     value: {
       type: String,
       default: "tomatoes",
+      validator: (fillingValue) =>
+        INGREDIENT_LIST.find(({ value }) => value === fillingValue),
     },
   },
 };

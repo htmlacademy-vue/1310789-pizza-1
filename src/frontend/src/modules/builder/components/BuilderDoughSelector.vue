@@ -20,9 +20,15 @@
 </template>
 
 <script>
+/**
+ * Строит список возможных вариантов теста
+ */
 export default {
   name: "BuilderDoughSelector",
   props: {
+    /**
+     * Массив возможных вариантов теста
+     */
     doughs: {
       type: Array,
       default: () => [],

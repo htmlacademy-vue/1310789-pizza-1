@@ -12,13 +12,22 @@
 <script>
 import { DATA_TRANSFER_PAYLOAD, MOVE } from "@/common/constants";
 
+/**
+ * Компонент обертка наделяет внутренний компонент способность перетаскивать
+ */
 export default {
   name: "AppDrag",
   props: {
+    /**
+     * Данные переносимого объекта (компонента)
+     */
     transferData: {
       type: Object,
       required: true,
     },
+    /**
+     * Указывает на возможность перетаскивания
+     */
     draggable: {
       type: Boolean,
       default: true,

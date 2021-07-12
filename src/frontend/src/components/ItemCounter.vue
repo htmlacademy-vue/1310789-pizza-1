@@ -29,12 +29,11 @@
 </template>
 
 <script>
-import {
-  INGREDIENT_DEFAULT_COUNT,
-  INGREDIENT_MAX_COUNT,
-  INGREDIENT_MIN_COUNT,
-} from "@/common/constants";
+import { INGREDIENT_DEFAULT_COUNT } from "@/common/constants";
 
+/**
+ * Компонент счетчик
+ */
 export default {
   name: "ItemCounter",
   props: {
@@ -48,17 +47,19 @@ export default {
     },
     /**
      * Минимальное значение в поле ввода
+     * если указать null, тогда этого ограничения не будет
      */
     minValue: {
-      type: Number,
-      default: INGREDIENT_MIN_COUNT,
+      type: [Number, null],
+      default: null,
     },
     /**
      * Максимальное значение в поле ввода
+     * если указать null, тогда этого ограничения не будет
      */
     maxValue: {
-      type: Number,
-      default: INGREDIENT_MAX_COUNT,
+      type: [Number, null],
+      default: null,
     },
   },
   computed: {
@@ -75,8 +76,12 @@ export default {
 
       if (Number.isNaN(value))
         return this.$emit("input", INGREDIENT_DEFAULT_COUNT);
-      if (value < this.minValue) return this.$emit("input", this.minValue);
-      if (value > this.maxValue) return this.$emit("input", this.maxValue);
+
+      if (this.minValue !== null && value < this.minValue)
+        return this.$emit("input", this.minValue);
+
+      if (this.maxValue !== null && value > this.maxValue)
+        return this.$emit("input", this.maxValue);
 
       return this.$emit("input", value);
     },

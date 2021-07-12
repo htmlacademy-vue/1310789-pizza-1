@@ -1,20 +1,31 @@
 <template>
   <div class="sheet">
     <div class="sheet__title">
+      <!-- @slot Слот для заголовка карточки-->
       <slot name="title">
         <AppTitle v-html="title" />
       </slot>
     </div>
-    <div class="sheet__content"><slot /></div>
+    <div class="sheet__content">
+      <!-- @slot Слот для содержимого карточки-->
+      <slot />
+    </div>
   </div>
 </template>
 
 <script>
 import AppTitle from "@/components/AppTitle";
+
+/**
+ * Карточка приложения
+ */
 export default {
   name: "AppSheet",
   components: { AppTitle },
   props: {
+    /**
+     * Текст заголовка карточки
+     */
     title: {
       type: String,
     },

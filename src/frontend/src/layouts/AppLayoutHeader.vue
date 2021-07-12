@@ -36,10 +36,17 @@
 <script>
 import AppLogo from "@/components/AppLogo";
 
+/**
+ * Хэдер приложения
+ */
 export default {
   name: "AppLayoutHeader",
   components: { AppLogo },
   props: {
+    /**
+     * Показывать или скрывать аватар пользователя;
+     * Показывать кнопку: "Войти" | "Выйти"
+     */
     authorized: {
       type: Boolean,
       default: false,

@@ -11,6 +11,9 @@
 </template>
 
 <script>
+/**
+ * Компонент кнопки
+ */
 export default {
   name: "AppButton",
   props: {

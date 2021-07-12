@@ -24,11 +24,19 @@
           :key="filling.value"
           class="ingredients__item"
         >
-          <AppDrag :draggable="filling.count < 3" :transfer-data="filling">
+          <AppDrag
+            :draggable="filling.count < maxCountFilling"
+            :transfer-data="filling"
+          >
             <SelectorItem :label="filling.name" :value="filling.value" />
           </AppDrag>
 
-          <ItemCounter v-model="filling.count" class="ingredients__counter" />
+          <ItemCounter
+            v-model="filling.count"
+            :min-value="minCountFilling"
+            :max-value="maxCountFilling"
+            class="ingredients__counter"
+          />
         </li>
       </ul>
     </div>
@@ -39,24 +47,44 @@
 import SelectorItem from "@/components/SelectorItem";
 import ItemCounter from "@/components/ItemCounter";
 import RadioButton from "@/components/RadioButton";
-import { SAUCE_DEFAULT } from "@/common/constants";
+import {
+  INGREDIENT_MAX_COUNT,
+  INGREDIENT_MIN_COUNT,
+  SAUCE_DEFAULT,
+} from "@/common/constants";
 import AppDrag from "@/components/AppDrag";
 
+/**
+ * Строит списки соуса и начинок
+ */
 export default {
   name: "BuilderIngredientsSelector",
   components: { AppDrag, RadioButton, ItemCounter, SelectorItem },
   props: {
+    /**
+     * Массив возможных вариантов соусов
+     */
     sauces: {
       type: Array,
     },
+    /**
+     * Выбранный соус
+     */
     checkedSauce: {
       type: String,
       default: SAUCE_DEFAULT,
     },
+    /**
+     * Массив возможных вариантов начинок
+     */
     fillings: {
       type: Array,
     },
   },
+  data: () => ({
+    minCountFilling: INGREDIENT_MIN_COUNT,
+    maxCountFilling: INGREDIENT_MAX_COUNT,
+  }),
 };
 </script>
 

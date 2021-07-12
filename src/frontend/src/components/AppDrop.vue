@@ -7,6 +7,9 @@
 <script>
 import { DATA_TRANSFER_PAYLOAD } from "@/common/constants";
 
+/**
+ * Компонент обертка наделяет внутренний компонент способность принимать данные от перетаскиваемого объекта
+ */
 export default {
   name: "AppDrop",
   methods: {

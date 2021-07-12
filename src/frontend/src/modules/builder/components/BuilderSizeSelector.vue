@@ -19,9 +19,15 @@
 </template>
 
 <script>
+/**
+ * Строит список для выбора размера пиццы
+ */
 export default {
   name: "BuilderSizeSelector",
   props: {
+    /**
+     * Массив возможных размеров пиццы
+     */
     sizes: {
       type: Array,
       default: () => [],

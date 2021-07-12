@@ -33,18 +33,31 @@
 
 <script>
 import AppDrop from "@/components/AppDrop";
+
+/**
+ * Строит отображение пиццы
+ */
 export default {
   name: "BuilderPizzaView",
   components: { AppDrop },
   props: {
+    /**
+     * Тип теста
+     */
     dough: {
       type: String,
       validator: (value) => ["light", "large"].indexOf(value) !== -1,
     },
+    /**
+     * Тип соуса
+     */
     sauce: {
       type: String,
       validator: (value) => ["tomato", "creamy"].indexOf(value) !== -1,
     },
+    /**
+     * Список начинок
+     */
     fillings: {
       type: Array,
       default: () => [],
