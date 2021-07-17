@@ -32,10 +32,13 @@
           </AppDrag>
 
           <ItemCounter
-            v-model="filling.count"
+            :value="filling.count"
             :min-value="minCountFilling"
             :max-value="maxCountFilling"
             class="ingredients__counter"
+            @input="
+              $emit('change-filling', { value: filling.value, count: $event })
+            "
           />
         </li>
       </ul>
@@ -44,15 +47,15 @@
 </template>
 
 <script>
-import SelectorItem from "@/components/SelectorItem";
-import ItemCounter from "@/components/ItemCounter";
-import RadioButton from "@/components/RadioButton";
+import SelectorItem from "@/common/components/SelectorItem";
+import ItemCounter from "@/common/components/ItemCounter";
+import RadioButton from "@/common/components/RadioButton";
 import {
   INGREDIENT_MAX_COUNT,
   INGREDIENT_MIN_COUNT,
   SAUCE_DEFAULT,
 } from "@/common/constants";
-import AppDrag from "@/components/AppDrag";
+import AppDrag from "@/common/components/AppDrag";
 
 /**
  * Строит списки соуса и начинок

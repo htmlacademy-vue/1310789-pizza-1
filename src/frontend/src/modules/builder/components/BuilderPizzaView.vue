@@ -1,5 +1,7 @@
 <template>
-  <AppDrop @drop="$emit('drop', $event)">
+  <AppDrop
+    @drop="$emit('drop', { value: $event.value, count: +$event.count + 1 })"
+  >
     <div class="pizza" :class="pizzaClassName">
       <div class="pizza__wrapper">
         <template v-for="filling in fillings">
@@ -32,7 +34,7 @@
 </template>
 
 <script>
-import AppDrop from "@/components/AppDrop";
+import AppDrop from "@/common/components/AppDrop";
 
 /**
  * Строит отображение пиццы
