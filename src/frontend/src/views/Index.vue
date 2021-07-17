@@ -1,150 +1,40 @@
 <template>
   <div>
-    <header class="header">
-      <div class="header__logo">
-        <a href="index.html" class="logo">
-          <img
-            :src="require('@/assets/img/logo.svg')"
-            alt="V!U!E! Pizza logo"
-            width="90"
-            height="40"
-          />
-        </a>
-      </div>
-      <div class="header__cart">
-        <a href="cart.html">0 ₽</a>
-      </div>
-      <div class="header__user">
-        <a href="#" class="header__login"><span>Войти</span></a>
-      </div>
-    </header>
-
+    <AppLayout />
     <main class="content">
       <form action="#" method="post">
         <div class="content__wrapper">
-          <h1 class="title title--big">Конструктор пиццы</h1>
+          <AppTitle tag="h1" size="big">Конструктор пиццы</AppTitle>
 
           <div class="content__dough">
-            <div class="sheet">
-              <h2 class="title title--small sheet__title">Выберите тесто</h2>
-
-              <div class="sheet__content dough">
-                <label
-                  v-for="dough in doughs"
-                  :key="dough.value"
-                  :class="['dough__input', `dough__input--${dough.value}`]"
-                >
-                  <input
-                    type="radio"
-                    name="dough"
-                    :value="dough.value"
-                    :checked="dough.value === 'light'"
-                    class="visually-hidden"
-                  />
-                  <b>{{ dough.name }}</b>
-                  <span>{{ dough.description }}</span>
-                </label>
-              </div>
-            </div>
+            <AppSheet title="Выберите тесто">
+              <BuilderDoughSelector v-model="currentDough" :doughs="doughs" />
+            </AppSheet>
           </div>
 
           <div class="content__diameter">
-            <div class="sheet">
-              <h2 class="title title--small sheet__title">Выберите размер</h2>
-
-              <div class="sheet__content diameter">
-                <label
-                  v-for="size in sizes"
-                  :key="size.value"
-                  :class="['diameter__input', `diameter__input--${size.value}`]"
-                >
-                  <input
-                    type="radio"
-                    name="diameter"
-                    :value="size.value"
-                    :checked="size.value === 'normal'"
-                    class="visually-hidden"
-                  />
-                  <span>{{ size.name }}</span>
-                </label>
-              </div>
-            </div>
+            <AppSheet title="Выберите размер">
+              <BuilderSizeSelector v-model="currentSize" :sizes="sizes" />
+            </AppSheet>
           </div>
 
           <div class="content__ingridients">
-            <div class="sheet">
-              <h2 class="title title--small sheet__title">
-                Выберите ингридиенты
-              </h2>
-
-              <div class="sheet__content ingridients">
-                <div class="ingridients__sauce">
-                  <p>Основной соус:</p>
-
-                  <label
-                    v-for="sauce in sauces"
-                    :key="sauce.value"
-                    class="radio ingridients__input"
-                  >
-                    <input
-                      type="radio"
-                      name="sauce"
-                      :checked="sauce.value === 'tomato'"
-                      :value="sauce.value"
-                    />
-                    <span>{{ sauce.name }}</span>
-                  </label>
-                </div>
-
-                <div class="ingridients__filling">
-                  <p>Начинка:</p>
-
-                  <ul class="ingridients__list">
-                    <li
-                      v-for="ingredient in ingredients"
-                      :key="ingredient.value"
-                      class="ingridients__item"
-                    >
-                      <span
-                        :class="['filling', `filling--${ingredient.value}`]"
-                        >{{ ingredient.name }}</span
-                      >
-
-                      <div class="counter counter--orange ingridients__counter">
-                        <button
-                          type="button"
-                          class="
-                            counter__button
-                            counter__button--disabled
-                            counter__button--minus
-                          "
-                        >
-                          <span class="visually-hidden">Меньше</span>
-                        </button>
-                        <input
-                          type="text"
-                          name="counter"
-                          class="counter__input"
-                          value="0"
-                        />
-                        <button
-                          type="button"
-                          class="counter__button counter__button--plus"
-                        >
-                          <span class="visually-hidden">Больше</span>
-                        </button>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+            <AppSheet title="Выберите ингредиенты">
+              <BuilderIngredientsSelector
+                :sauces="sauces"
+                :checked-sauce="currentSauce"
+                :fillings="ingredients"
+                @change-sauce="currentSauce = $event"
+                @change-filling="changeFilling"
+              />
+            </AppSheet>
           </div>
 
           <div class="content__pizza">
             <label class="input">
               <span class="visually-hidden">Название пиццы</span>
               <input
+                v-model="pizzaName"
                 type="text"
                 name="pizza_name"
                 placeholder="Введите название пиццы"
@@ -152,20 +42,17 @@
             </label>
 
             <div class="content__constructor">
-              <div class="pizza pizza--foundation--big-tomato">
-                <div class="pizza__wrapper">
-                  <div class="pizza__filling pizza__filling--ananas"></div>
-                  <div class="pizza__filling pizza__filling--bacon"></div>
-                  <div class="pizza__filling pizza__filling--cheddar"></div>
-                </div>
-              </div>
+              <BuilderPizzaView
+                :dough="currentDough"
+                :sauce="currentSauce"
+                :fillings="currentFillings"
+                @drop="changeFilling"
+              />
             </div>
 
             <div class="content__result">
-              <p>Итого: 0 ₽</p>
-              <button type="button" class="button button--disabled" disabled>
-                Готовьте!
-              </button>
+              <p>Итого: {{ pizzaPrice }} ₽</p>
+              <AppButton disabled>Готовьте!</AppButton>
             </div>
           </div>
         </div>
@@ -175,6 +62,16 @@
 </template>
 
 <script>
+import AppLayout from "@/layouts/AppLayout";
+import AppSheet from "@/common/components/AppSheet";
+import AppTitle from "@/common/components/AppTitle";
+import AppButton from "@/common/components/AppButton";
+import BuilderIngredientsSelector from "@/modules/builder/components/BuilderIngredientsSelector";
+import BuilderSizeSelector from "@/modules/builder/components/BuilderSizeSelector";
+import BuilderDoughSelector from "@/modules/builder/components/BuilderDoughSelector";
+import BuilderPizzaView from "@/modules/builder/components/BuilderPizzaView";
+
+import { DOUGH_DEFAULT, SAUCE_DEFAULT, SIZE_DEFAULT } from "@/common/constants";
 import pizza from "@/static/pizza.json";
 import {
   normalizeDough,
@@ -185,11 +82,59 @@ import {
 
 export default {
   name: "Index",
+  components: {
+    AppLayout,
+    BuilderPizzaView,
+    AppButton,
+    AppTitle,
+    BuilderDoughSelector,
+    AppSheet,
+    BuilderSizeSelector,
+    BuilderIngredientsSelector,
+  },
   data: () => ({
     doughs: pizza.dough.map((item) => normalizeDough(item)),
     ingredients: pizza.ingredients.map((item) => normalizeIngredient(item)),
     sauces: pizza.sauces.map((item) => normalizeSauce(item)),
     sizes: pizza.sizes.map((item) => normalizeSize(item)),
+    currentDough: DOUGH_DEFAULT,
+    currentSauce: SAUCE_DEFAULT,
+    currentSize: SIZE_DEFAULT,
+    pizzaName: "",
   }),
+  computed: {
+    currentFillings() {
+      return this.ingredients.filter(({ count }) => count > 0);
+    },
+    pizzaPrice() {
+      const doughPrice =
+        this.doughs.find(({ value }) => value === this.currentDough)?.price ??
+        0;
+      const saucePrice =
+        this.sauces.find(({ value }) => value === this.currentSauce)?.price ??
+        0;
+      const fillingsPrice = this.currentFillings.reduce(
+        (totalPrice, { count, price }) => {
+          return totalPrice + count * price;
+        },
+        0
+      );
+      const multiplier =
+        this.sizes.find(({ value }) => value === this.currentSize)
+          ?.multiplier ?? 1;
+
+      return (doughPrice + saucePrice + fillingsPrice) * multiplier;
+    },
+  },
+  methods: {
+    changeFilling({ count, value }) {
+      this.ingredients = this.ingredients.map((item) => {
+        if (item.value === value) {
+          return { ...item, count };
+        }
+        return item;
+      });
+    },
+  },
 };
 </script>

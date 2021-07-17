@@ -1,5 +1,6 @@
 import {
   DOUGH_LIST,
+  INGREDIENT_DEFAULT_COUNT,
   INGREDIENT_LIST,
   SAUCE_LIST,
   SIZE_LIST,
@@ -36,6 +37,7 @@ export const normalizeDough = (item) => ({
 export const normalizeIngredient = (item) => ({
   ...item,
   value: getValueByName(item.name, INGREDIENT_LIST),
+  count: INGREDIENT_DEFAULT_COUNT,
 });
 
 /**
