@@ -22,7 +22,6 @@ export default {
      */
     value: {
       type: String,
-      default: "tomatoes",
       validator: (fillingValue) =>
         INGREDIENT_LIST.find(({ value }) => value === fillingValue),
     },

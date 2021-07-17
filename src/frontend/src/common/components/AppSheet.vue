@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import AppTitle from "@/components/AppTitle";
+import AppTitle from "@/common/components/AppTitle";
 
 /**
  * Карточка приложения
