@@ -1,186 +1,25 @@
 <template>
-  <header class="header">
-    <div class="header__logo">
-      <AppLogo />
-    </div>
-    <div class="header__cart">
-      <a href="/cart">0 ₽</a>
-    </div>
-    <div class="header__user">
-      <a v-if="!authorized" href="/login" class="header__login"
-        ><span>Войти</span></a
-      >
-      <template v-else>
-        <a href="/user">
-          <picture>
-            <source
-              type="image/webp"
-              :srcset="`${require('@/assets/img/users/user5.webp')} 1x, ${require('@/assets/img/users/user5@2x.webp')} 2x`"
-            />
-            <img
-              :src="require('@/assets/img/users/user5.jpg')"
-              :srcset="require('@/assets/img/users/user5@2x.jpg')"
-              alt="Василий Ложкин"
-              width="32"
-              height="32"
-            />
-          </picture>
-          <span>Василий Ложкин</span>
-        </a>
-        <a href="/logout" class="header__logout"><span>Выйти</span></a>
-      </template>
-    </div>
-  </header>
+  <component :is="layout">
+    <slot />
+  </component>
 </template>
 
 <script>
-import AppLogo from "@/common/components/AppLogo";
+const defaultLayout = "AppLayoutDefault";
 
 /**
- * Хэдер приложения
+ * Автоматически подключает шаблон указанный в meta.layout роута
  */
 export default {
   name: "AppLayout",
-  components: { AppLogo },
-  props: {
-    /**
-     * Показывать или скрывать аватар пользователя;
-     * Показывать кнопку: "Войти" | "Выйти"
-     */
-    authorized: {
-      type: Boolean,
-      default: false,
+  computed: {
+    layout() {
+      const layout = this.$route.meta.layout || defaultLayout;
+
+      return () => import(`@/layouts/${layout}.vue`);
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
-.header {
-  position: relative;
-  z-index: 2;
-
-  display: flex;
-
-  padding: 0 2.12%;
-
-  background-color: $green-500;
-  box-shadow: $shadow-light;
-}
-
-.header__logo {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.header__cart {
-  margin-right: 10px;
-  margin-left: auto;
-
-  a {
-    @include b-s16-h19;
-
-    display: block;
-
-    padding-top: 21px;
-    padding-right: 15px;
-    padding-bottom: 21px;
-    padding-left: 58px;
-
-    transition: 0.3s;
-
-    color: $white;
-    background-color: $green-500;
-    background-image: url("~@/assets/img/cart.svg");
-    background-repeat: no-repeat;
-    background-position: 20px center;
-    background-size: 29px 27px;
-
-    &:hover:not(:active) {
-      background-color: $green-400;
-    }
-
-    &:active {
-      background-color: $green-600;
-    }
-
-    &:focus {
-      opacity: 0.5;
-    }
-  }
-}
-
-.header__user {
-  display: flex;
-  align-items: center;
-
-  a {
-    display: block;
-
-    padding-top: 14px;
-    padding-right: 20px;
-    padding-bottom: 14px;
-    padding-left: 20px;
-
-    transition: 0.3s;
-
-    background-color: $green-500;
-
-    &:hover:not(:active) {
-      background-color: $green-400;
-    }
-
-    &:active {
-      background-color: $green-600;
-    }
-
-    &:focus {
-      opacity: 0.5;
-    }
-  }
-
-  img {
-    display: inline-block;
-
-    width: 32px;
-    height: 32px;
-    margin-right: 8px;
-
-    vertical-align: middle;
-
-    border-radius: 50%;
-  }
-
-  span {
-    @include r-s14-h16;
-
-    display: inline-block;
-
-    vertical-align: middle;
-
-    color: $white;
-  }
-}
-
-.header__logout::before {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  margin-right: 8px;
-  content: "";
-  vertical-align: middle;
-  background: url("~@/assets/img/login.svg") no-repeat center;
-  background-size: auto 50%;
-}
-
-.header__login::after {
-  display: inline-block;
-  width: 32px;
-  height: 32px;
-  margin-left: 8px;
-  content: "";
-  vertical-align: middle;
-  background: url("~@/assets/img/login.svg") no-repeat center;
-  background-size: auto 50%;
-}
-</style>
+<style scoped></style>

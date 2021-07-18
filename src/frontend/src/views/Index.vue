@@ -1,68 +1,66 @@
 <template>
-  <div>
-    <AppLayout />
-    <main class="content">
-      <form action="#" method="post">
-        <div class="content__wrapper">
-          <AppTitle tag="h1" size="big">Конструктор пиццы</AppTitle>
+  <main class="content">
+    <form action="#" method="post">
+      <div class="content__wrapper">
+        <AppTitle tag="h1" size="big">Конструктор пиццы</AppTitle>
 
-          <div class="content__dough">
-            <AppSheet title="Выберите тесто">
-              <BuilderDoughSelector v-model="currentDough" :doughs="doughs" />
-            </AppSheet>
+        <div class="content__dough">
+          <AppSheet title="Выберите тесто">
+            <BuilderDoughSelector v-model="currentDough" :doughs="doughs" />
+          </AppSheet>
+        </div>
+
+        <div class="content__diameter">
+          <AppSheet title="Выберите размер">
+            <BuilderSizeSelector v-model="currentSize" :sizes="sizes" />
+          </AppSheet>
+        </div>
+
+        <div class="content__ingridients">
+          <AppSheet title="Выберите ингредиенты">
+            <BuilderIngredientsSelector
+              :sauces="sauces"
+              :checked-sauce="currentSauce"
+              :fillings="ingredients"
+              @change-sauce="currentSauce = $event"
+              @change-filling="changeFilling"
+            />
+          </AppSheet>
+        </div>
+
+        <div class="content__pizza">
+          <label class="input">
+            <span class="visually-hidden">Название пиццы</span>
+            <input
+              v-model="pizzaName"
+              type="text"
+              name="pizza_name"
+              placeholder="Введите название пиццы"
+            />
+          </label>
+
+          <div class="content__constructor">
+            <BuilderPizzaView
+              :dough="currentDough"
+              :sauce="currentSauce"
+              :fillings="currentFillings"
+              @drop="changeFilling"
+            />
           </div>
 
-          <div class="content__diameter">
-            <AppSheet title="Выберите размер">
-              <BuilderSizeSelector v-model="currentSize" :sizes="sizes" />
-            </AppSheet>
-          </div>
-
-          <div class="content__ingridients">
-            <AppSheet title="Выберите ингредиенты">
-              <BuilderIngredientsSelector
-                :sauces="sauces"
-                :checked-sauce="currentSauce"
-                :fillings="ingredients"
-                @change-sauce="currentSauce = $event"
-                @change-filling="changeFilling"
-              />
-            </AppSheet>
-          </div>
-
-          <div class="content__pizza">
-            <label class="input">
-              <span class="visually-hidden">Название пиццы</span>
-              <input
-                v-model="pizzaName"
-                type="text"
-                name="pizza_name"
-                placeholder="Введите название пиццы"
-              />
-            </label>
-
-            <div class="content__constructor">
-              <BuilderPizzaView
-                :dough="currentDough"
-                :sauce="currentSauce"
-                :fillings="currentFillings"
-                @drop="changeFilling"
-              />
-            </div>
-
-            <div class="content__result">
-              <p>Итого: {{ pizzaPrice }} ₽</p>
-              <AppButton disabled>Готовьте!</AppButton>
-            </div>
+          <div class="content__result">
+            <p>Итого: {{ pizzaPrice }} ₽</p>
+            <AppButton disabled>Готовьте!</AppButton>
           </div>
         </div>
-      </form>
-    </main>
-  </div>
+      </div>
+    </form>
+
+    <router-view />
+  </main>
 </template>
 
 <script>
-import AppLayout from "@/layouts/AppLayout";
 import AppSheet from "@/common/components/AppSheet";
 import AppTitle from "@/common/components/AppTitle";
 import AppButton from "@/common/components/AppButton";
@@ -80,10 +78,12 @@ import {
   normalizeSize,
 } from "@/common/helpers";
 
+/**
+ * Контент страницы "Главная"
+ */
 export default {
   name: "Index",
   components: {
-    AppLayout,
     BuilderPizzaView,
     AppButton,
     AppTitle,
